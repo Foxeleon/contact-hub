@@ -1,0 +1,9 @@
+# IDE-specific
+.idea/
+.vscode/
+# Frontend dependencies
+frontend/node_modules/
+frontend/dist/
+# Backend build artifacts
+backend/*.exe
+backend/binary-name
