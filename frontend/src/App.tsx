@@ -7,7 +7,7 @@ import type { Person } from './types/person';
 
 const API_URL = import.meta.env.VITE_API_URL_PERSONS;
 
-// Response type from our backend
+// The response type from our Go backend
 interface ApiResponse {
     Data: Person[];
     Total: number;
@@ -25,24 +25,41 @@ function App() {
 
     // Filtering and pagination state
     const [searchTerm, setSearchTerm] = useState('');
+    const [birthdayFrom, setBirthdayFrom] = useState<Date | null>(null); // <-- NEW STATE
+    const [birthdayTo, setBirthdayTo] = useState<Date | null>(null);     // <-- NEW STATE
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [totalRows, setTotalRows] = useState(0);
 
-    // Effect to fetch data when filters or page change
+    // Effect to fetch data when any filter or page changes
     useEffect(() => {
         const fetchPersons = async () => {
+            if (!API_URL) {
+                setError('API URL is not configured. Please check your .env file.');
+                setLoading(false);
+                return;
+            }
+
             setLoading(true);
             setError(null);
 
-            // Build query params
+            // Build query params from all filter states
             const params = new URLSearchParams();
             params.append('page', (page + 1).toString());
             params.append('pageSize', rowsPerPage.toString());
             if (searchTerm) {
                 params.append('q', searchTerm);
             }
-            // TODO: Add date filters to params
+            // Add date filters to params if they are selected, in ISO format
+            if (birthdayFrom) {
+                params.append('birthdayFrom', birthdayFrom.toISOString());
+            }
+            if (birthdayTo) {
+                // Set to the end of the day to ensure the selected day is included in the range
+                const endOfDay = new Date(birthdayTo);
+                endOfDay.setHours(23, 59, 59, 999);
+                params.append('birthdayTo', endOfDay.toISOString());
+            }
 
             try {
                 const response = await fetch(`${API_URL}?${params.toString()}`);
@@ -61,19 +78,26 @@ function App() {
             }
         };
 
-        // Debounce fetching to avoid too many API calls while typing
-        const timer = setTimeout(() => {
+        // Debounce fetching to avoid excessive API calls while typing
+        const debounce = setTimeout(() => {
             fetchPersons();
-        }, 500); // 500ms delay
+        }, 500);
 
-        return () => clearTimeout(timer);
+        return () => clearTimeout(debounce);
 
-    }, [searchTerm, page, rowsPerPage]);
+        // Add new date states to the dependency array to re-trigger the effect
+    }, [searchTerm, birthdayFrom, birthdayTo, page, rowsPerPage]);
 
     // Handlers
     const handleRowClick = (person: Person) => {
         setSelectedPerson(person);
         setDialogOpen(true);
+    };
+
+    // Handler to reset page to 0 when rowsPerPage changes
+    const handleRowsPerPageChange = (newRowsPerPage: number) => {
+        setRowsPerPage(newRowsPerPage);
+        setPage(0);
     };
 
     return (
@@ -86,6 +110,10 @@ function App() {
                     <SearchFilter
                         searchTerm={searchTerm}
                         onSearchChange={setSearchTerm}
+                        birthdayFrom={birthdayFrom}
+                        onBirthdayFromChange={setBirthdayFrom}
+                        birthdayTo={birthdayTo}
+                        onBirthdayToChange={setBirthdayTo}
                     />
 
                     {loading ? (
@@ -100,7 +128,7 @@ function App() {
                             totalRows={totalRows}
                             onRowClick={handleRowClick}
                             onPageChange={setPage}
-                            onRowsPerPageChange={setRowsPerPage}
+                            onRowsPerPageChange={handleRowsPerPageChange}
                         />
                     )}
 

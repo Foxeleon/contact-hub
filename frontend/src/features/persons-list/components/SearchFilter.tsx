@@ -3,18 +3,28 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import type { ChangeEvent } from "react";
 
-// Define the props that the component will receive
+// Define the complete props interface for the component
 interface SearchFilterProps {
     searchTerm: string;
     onSearchChange: (newSearchTerm: string) => void;
-    // TODO: Add props for date filters (e.g., birthdayFrom, onBirthdayFromChange)
+    // Add props for date filters
+    birthdayFrom: Date | null;
+    onBirthdayFromChange: (date: Date | null) => void;
+    birthdayTo: Date | null;
+    onBirthdayToChange: (date: Date | null) => void;
 }
 
-// The component is now a "dumb" presentational component
-export const SearchFilter = ({ searchTerm, onSearchChange }: SearchFilterProps) => {
+// The component remains a "dumb" presentational component
+export const SearchFilter = ({
+                                 searchTerm,
+                                 onSearchChange,
+                                 birthdayFrom,
+                                 onBirthdayFromChange,
+                                 birthdayTo,
+                                 onBirthdayToChange
+                             }: SearchFilterProps) => {
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-        // It doesn't set its own state, it just calls the function passed from the parent
         onSearchChange(event.target.value);
     };
 
@@ -26,7 +36,6 @@ export const SearchFilter = ({ searchTerm, onSearchChange }: SearchFilterProps) 
                         display: 'flex',
                         gap: 2, // Defines the space between flex items
                         alignItems: 'center',
-                        // Responsive layout: column on extra-small screens, row on small and up
                         flexDirection: { xs: 'column', sm: 'row' }
                     }}
                 >
@@ -34,25 +43,27 @@ export const SearchFilter = ({ searchTerm, onSearchChange }: SearchFilterProps) 
                         label="Search by name..."
                         variant="outlined"
                         fullWidth
-                        value={searchTerm} // Value comes from props
-                        onChange={handleSearchChange} // Handler calls a function from props
+                        value={searchTerm}
+                        onChange={handleSearchChange}
                     />
                     <Box sx={{ width: { xs: '100%', sm: 180 } }}>
                         <DatePicker
                             label="Birthday from"
+                            value={birthdayFrom}
+                            onChange={onBirthdayFromChange}
                             slotProps={{
                                 textField: { fullWidth: true }
                             }}
-                            // TODO: Connect to state and handlers
                         />
                     </Box>
                     <Box sx={{ width: { xs: '100%', sm: 180 } }}>
                         <DatePicker
                             label="Birthday to"
+                            value={birthdayTo}
+                            onChange={onBirthdayToChange}
                             slotProps={{
                                 textField: { fullWidth: true }
                             }}
-                            // TODO: Connect to state and handlers
                         />
                     </Box>
                 </Box>
