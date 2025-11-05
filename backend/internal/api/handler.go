@@ -1,10 +1,11 @@
 package api
-
 import (
 	"contact-hub/backend/internal/storage"
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // Handlers struct holds dependencies like storage.
@@ -12,16 +13,40 @@ type Handlers struct {
 	Storage *storage.PersonStorage
 }
 
-// GetPersons handles the request to retrieve all person records.
+// GetPersons now handles filtering and pagination.
 func (h *Handlers) GetPersons(w http.ResponseWriter, r *http.Request) {
-	// 1. Get all persons from the storage
-	persons := h.Storage.GetAll()
-
-	// 2. For now, return the full list. Pagination and filtering will be added later.
+	// Parse query parameters
+	query := r.URL.Query().Get("q")
+	pageStr := r.URL.Query().Get("page")
+	pageSizeStr := r.URL.Query().Get("pageSize")
+	bdayFromStr := r.URL.Query().Get("birthdayFrom")
+	bdayToStr := r.URL.Query().Get("birthdayTo")
+	page, _ := strconv.Atoi(pageStr)
+	if page < 1 {
+		page = 1
+	}
+	pageSize, _ := strconv.Atoi(pageSizeStr)
+	if pageSize < 1 || pageSize > 100 {
+		pageSize = 10 // Default page size
+	}
+	var bdayFrom, bdayTo *time.Time
+	if t, err := time.Parse(time.RFC3339, bdayFromStr); err == nil {
+		bdayFrom = &t
+	}
+	if t, err := time.Parse(time.RFC3339, bdayToStr); err == nil {
+		bdayTo = &t
+	}
+	params := storage.SearchParams{
+		Query:        query,
+		BirthdayFrom: bdayFrom,
+		BirthdayTo:   bdayTo,
+		Page:         page,
+		PageSize:     pageSize,
+	}
+	result := h.Storage.Query(params)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(persons); err != nil {
-		log.Printf("ERROR: Failed to encode persons to JSON: %v", err)
-		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+	if err := json.NewEncoder(w).Encode(result); err != nil {
+		log.Printf("ERROR: Failed to encode result to JSON: %v", err)
 	}
 }

@@ -1,9 +1,25 @@
 package storage
-
 import (
 	"contact-hub/backend/internal/model"
+	"strings"
 	"sync"
+	"time"
 )
+// SearchParams defines the query parameters for searching persons.
+type SearchParams struct {
+	Query        string
+	BirthdayFrom *time.Time
+	BirthdayTo   *time.Time
+	Page         int
+	PageSize     int
+}
+// QueryResult represents the result of a query, including data and pagination info.
+type QueryResult struct {
+    Data       []model.Person
+    Total      int
+    Page       int
+    PageSize   int
+}
 
 // PersonStorage is a thread-safe in-memory storage for Person objects.
 type PersonStorage struct {
@@ -18,7 +34,7 @@ func NewPersonStorage(initialData []model.Person) *PersonStorage {
 	}
 }
 
-// GetAll returns a copy of all persons from the storage.
+// GetAll returns a copy of all persons from the storage. Leave for testing
 func (s *PersonStorage) GetAll() []model.Person {
 	s.mu.RLock() // Use a read lock for safety
 	defer s.mu.RUnlock()
@@ -27,4 +43,51 @@ func (s *PersonStorage) GetAll() []model.Person {
 	personsCopy := make([]model.Person, len(s.persons))
 	copy(personsCopy, s.persons)
 	return personsCopy
+}
+
+// Query applies filtering and pagination to the stored persons.
+func (s *PersonStorage) Query(params SearchParams) QueryResult {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	filtered := make([]model.Person, 0)
+    // 1. Apply full-text search filter (case-insensitive)
+	if params.Query != "" {
+		searchQuery := strings.ToLower(params.Query)
+		for _, p := range s.persons {
+			if strings.Contains(strings.ToLower(p.FirstName), searchQuery) ||
+               strings.Contains(strings.ToLower(p.LastName), searchQuery) {
+				filtered = append(filtered, p)
+			}
+		}
+	} else {
+		filtered = append(filtered, s.persons...)
+	}
+
+    // Create a new slice for date filtering
+    dateFiltered := make([]model.Person, 0)
+    // 2. Apply date range filters
+    for _, p := range filtered {
+        afterFrom := params.BirthdayFrom == nil || p.Birthday.After(*params.BirthdayFrom) || p.Birthday.Equal(*params.BirthdayFrom)
+        beforeTo := params.BirthdayTo == nil || p.Birthday.Before(*params.BirthdayTo) || p.Birthday.Equal(*params.BirthdayTo)
+        if afterFrom && beforeTo {
+            dateFiltered = append(dateFiltered, p)
+        }
+    }
+	totalRecords := len(dateFiltered)
+	// 3. Apply pagination
+	start := (params.Page - 1) * params.PageSize
+	end := start + params.PageSize
+	if start > totalRecords {
+		start = totalRecords
+	}
+	if end > totalRecords {
+		end = totalRecords
+	}
+	paginatedData := dateFiltered[start:end]
+	return QueryResult{
+		Data:       paginatedData,
+		Total:      totalRecords,
+		Page:       params.Page,
+		PageSize:   params.PageSize,
+	}
 }
