@@ -15,8 +15,8 @@ import {
 import type { Person } from '../../../types/person'; // Import the type
 // Import the type
 
-// The API endpoint address
-const API_URL = import.meta.env.API_URL;
+// The API endpoint address for persons
+const API_URL = import.meta.env.VITE_API_URL_PERSONS;
 
 export const PersonsTable = () => {
     // State for managing data, loading status, and errors
@@ -27,6 +27,11 @@ export const PersonsTable = () => {
     // Fetch data from the backend when the component mounts
     useEffect(() => {
         const fetchPersons = async () => {
+            if (!API_URL) {
+                setError('API URL is not configured. Please check your .env file.');
+                setLoading(false);
+                return;
+            }
             try {
                 setLoading(true);
                 setError(null);

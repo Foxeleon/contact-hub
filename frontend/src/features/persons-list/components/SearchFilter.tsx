@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Box, TextField, Paper } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import type { ChangeEvent } from "react";
 
 export const SearchFilter = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     // Handler for the text search input change
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
         // For now, just log to console to confirm it's working
         console.log('Search Term:', event.target.value);
