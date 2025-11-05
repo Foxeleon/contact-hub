@@ -1,18 +1,21 @@
-import { useState } from 'react';
 import { Box, TextField, Paper } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import type { ChangeEvent } from "react";
 
-export const SearchFilter = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+// Define the props that the component will receive
+interface SearchFilterProps {
+    searchTerm: string;
+    onSearchChange: (newSearchTerm: string) => void;
+    // TODO: Add props for date filters (e.g., birthdayFrom, onBirthdayFromChange)
+}
 
-    // Handler for the text search input change
+// The component is now a "dumb" presentational component
+export const SearchFilter = ({ searchTerm, onSearchChange }: SearchFilterProps) => {
+
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-        // For now, just log to console to confirm it's working
-        console.log('Search Term:', event.target.value);
-        // TODO: This will later trigger an API call based on the search term
+        // It doesn't set its own state, it just calls the function passed from the parent
+        onSearchChange(event.target.value);
     };
 
     return (
@@ -30,20 +33,28 @@ export const SearchFilter = () => {
                     <TextField
                         label="Search by name..."
                         variant="outlined"
-                        fullWidth // Allows the text field to take up available space
-                        value={searchTerm}
-                        onChange={handleSearchChange}
+                        fullWidth
+                        value={searchTerm} // Value comes from props
+                        onChange={handleSearchChange} // Handler calls a function from props
                     />
-                    <DatePicker
-                        label="Birthday from"
-                        sx={{ minWidth: { sm: 180 } }} // Ensure consistent width on larger screens
-                        // TODO: Implement state and onChange handler for this date picker
-                    />
-                    <DatePicker
-                        label="Birthday to"
-                        sx={{ minWidth: { sm: 180 } }} // Ensure consistent width on larger screens
-                        // TODO: Implement state and onChange handler for this date picker
-                    />
+                    <Box sx={{ width: { xs: '100%', sm: 180 } }}>
+                        <DatePicker
+                            label="Birthday from"
+                            slotProps={{
+                                textField: { fullWidth: true }
+                            }}
+                            // TODO: Connect to state and handlers
+                        />
+                    </Box>
+                    <Box sx={{ width: { xs: '100%', sm: 180 } }}>
+                        <DatePicker
+                            label="Birthday to"
+                            slotProps={{
+                                textField: { fullWidth: true }
+                            }}
+                            // TODO: Connect to state and handlers
+                        />
+                    </Box>
                 </Box>
             </LocalizationProvider>
         </Paper>

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
     Paper,
     Table,
@@ -8,60 +7,39 @@ import {
     TableHead,
     TableRow,
     Typography,
-    CircularProgress,
-    Alert,
-    Box
+    TablePagination
 } from '@mui/material';
-import type { Person } from '../../../types/person'; // Import the type
-// Import the type
+import type { Person } from '../../../types/person';
 
-// The API endpoint address for persons
-const API_URL = import.meta.env.VITE_API_URL_PERSONS;
+// Define the props for the component
+interface PersonsTableProps {
+    persons: Person[];
+    page: number;
+    rowsPerPage: number;
+    totalRows: number;
+    onRowClick: (person: Person) => void;
+    onPageChange: (newPage: number) => void;
+    onRowsPerPageChange: (newRowsPerPage: number) => void;
+}
 
-export const PersonsTable = () => {
-    // State for managing data, loading status, and errors
-    const [persons, setPersons] = useState<Person[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+export const PersonsTable = ({
+                                 persons,
+                                 page,
+                                 rowsPerPage,
+                                 totalRows,
+                                 onRowClick,
+                                 onPageChange,
+                                 onRowsPerPageChange,
+                             }: PersonsTableProps) => {
 
-    // Fetch data from the backend when the component mounts
-    useEffect(() => {
-        const fetchPersons = async () => {
-            if (!API_URL) {
-                setError('API URL is not configured. Please check your .env file.');
-                setLoading(false);
-                return;
-            }
-            try {
-                setLoading(true);
-                setError(null);
-                const response = await fetch(API_URL);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data: Person[] = await response.json();
-                setPersons(data);
-            } catch (e: any) {
-                setError(`Failed to fetch data: ${e.message}`);
-            } finally {
-                setLoading(false);
-            }
-        };
+    // Event handlers now just call functions from props
+    const handlePageChange = (_event: unknown, newPage: number) => {
+        onPageChange(newPage);
+    };
 
-        fetchPersons().then(() => true);
-    }, []); // The empty dependency array ensures this runs only once on mount
-
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
-                <CircularProgress />
-            </Box>
-        );
-    }
-
-    if (error) {
-        return <Alert severity="error">{error}</Alert>;
-    }
+    const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        onRowsPerPageChange(parseInt(event.target.value, 10));
+    };
 
     return (
         <Paper>
@@ -76,8 +54,14 @@ export const PersonsTable = () => {
                     </TableHead>
                     <TableBody>
                         {persons.length > 0 ? (
-                            persons.map((person, index) => (
-                                <TableRow key={index} hover sx={{ cursor: 'pointer' }}>
+                            persons.map((person) => (
+                                // Use a unique key if available, e.g., person.id
+                                <TableRow
+                                    key={`${person.firstName}-${person.lastName}`}
+                                    hover
+                                    sx={{ cursor: 'pointer' }}
+                                    onClick={() => onRowClick(person)} // Call parent's handler on click
+                                >
                                     <TableCell>{person.firstName}</TableCell>
                                     <TableCell>{person.lastName}</TableCell>
                                     <TableCell>{new Date(person.birthday).toLocaleDateString()}</TableCell>
@@ -93,7 +77,16 @@ export const PersonsTable = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {/* TODO: Server-side pagination will be implemented here */}
+            {/* Pagination is now fully controlled by the parent component */}
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={totalRows}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+            />
         </Paper>
     );
 };
