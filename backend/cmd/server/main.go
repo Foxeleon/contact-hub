@@ -2,28 +2,29 @@ package main
 
 import (
 	"contact-hub/backend/internal/api"
+	"contact-hub/backend/internal/parser"
 	"contact-hub/backend/internal/storage"
 	"log"
 	"net/http"
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 )
 
 func main() {
-    log.Println("Starting Contact Hub service...")
-
-    // Create storage instance
-    personStorage := storage.NewPersonStorage()
-
-    // TODO: Load data from files into storage.
-    // For now, I start with an empty storage.
-
-    // Setup API handlers
-    apiHandlers := &api.Handlers{
-        Storage: personStorage,
-    }
+	log.Println("Starting Contact Hub service...")
+	// 1. Load person data from files using the parser
+	loadedPersons, err := parser.LoadPersons("./data")
+	if err != nil {
+		// Log a fatal error because the service is useless without data
+		log.Fatalf("FATAL: Failed to load initial data: %v", err)
+	}
+	// 2. Create storage instance with the loaded data
+	personStorage := storage.NewPersonStorage(loadedPersons)
+	// Setup API handlers
+	apiHandlers := &api.Handlers{
+		Storage: personStorage,
+	}
 
     // Setup router
     r := chi.NewRouter()
@@ -36,7 +37,7 @@ func main() {
 
     // Setup CORS
     r.Use(cors.Handler(cors.Options{
-        AllowedOrigins:   []string{"http://localhost:5173"}, // Your frontend's address
+        AllowedOrigins:   []string{"http://localhost:5173"}, // frontend's address; add other address, if deploy to www
         AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
         AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
         ExposedHeaders:   []string{"Link"},
