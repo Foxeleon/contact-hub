@@ -57,8 +57,8 @@ This mode is ideal when you are actively working on either the frontend or backe
 
 #### Prerequisites
 
-- **Go** (version 1.21+ recommended).
-- **Node.js** (version 20+ recommended) and **npm**.
+- **Go** (version 1.25.4 recommended).
+- **Node.js** (version 22 recommended) and **npm**.
 - **Make** (for using backend helper commands).
 
 #### Environment Configuration (Crucial First Step!)
