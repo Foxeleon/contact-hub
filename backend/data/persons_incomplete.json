@@ -1,0 +1,29 @@
+[
+  {
+    "firstName": "Ursula",
+    "lastName": "Hall",
+    "birthday": "2000-04-01T00:00:00Z",
+    "address": "999 Palm Court, Springfield",
+    "phoneNumber": "555-0121"
+  },
+  {
+    "firstName": "Victor",
+    "lastName": "Allen",
+    "birthday": "1978-11-11T00:00:00Z",
+    "address": "1212 Acacia Road, Springfield",
+    "phoneNumber": "555-0122"
+  },
+  {
+    "firstName": "Wendy",
+    "lastName": "",
+    "birthday": "1991-02-02T00:00:00Z",
+    "address": "1313 Mimosa Lane, Springfield",
+    "phoneNumber": "555-0123"
+  },
+  {
+    "firstName": "Xavier",
+    "lastName": "Young",
+    "address": "1414 Banyan Blvd, Springfield",
+    "phoneNumber": "555-0124"
+  }
+]

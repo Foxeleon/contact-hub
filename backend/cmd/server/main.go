@@ -6,9 +6,11 @@ import (
 	"contact-hub/backend/internal/storage"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 )
 
 func main() {
@@ -37,6 +39,18 @@ func main() {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+
+	// Enable CORS only if it is running in development mode.
+	if os.Getenv("APP_ENV") == "development" {
+		log.Println("Development mode: Enabling CORS for localhost:5173")
+		r.Use(cors.Handler(cors.Options{
+			AllowedOrigins:   []string{"http://localhost:5173"},
+			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+			AllowCredentials: true,
+			MaxAge:           300, // Maximum value not ignored by any browser
+		}))
+	}
 
 	// Group all API routes under the /api prefix
 	r.Route("/api", func(r chi.Router) {

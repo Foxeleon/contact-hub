@@ -1,0 +1,72 @@
+[
+  {
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "birthday": "1992-08-15T00:00:00Z",
+    "address": "123 Maple Street, Springfield",
+    "phoneNumber": "555-0101"
+  },
+  {
+    "firstName": "Bob",
+    "lastName": "Williams",
+    "birthday": "1988-03-22T00:00:00Z",
+    "address": "456 Oak Avenue, Springfield",
+    "phoneNumber": "555-0102"
+  },
+  {
+    "firstName": "Charlie",
+    "lastName": "Brown",
+    "birthday": "1995-11-30T00:00:00Z",
+    "address": "789 Pine Lane, Springfield",
+    "phoneNumber": "555-0103"
+  },
+  {
+    "firstName": "Diana",
+    "lastName": "Miller",
+    "birthday": "1991-07-19T00:00:00Z",
+    "address": "101 Elm Court, Springfield",
+    "phoneNumber": "555-0104"
+  },
+  {
+    "firstName": "Edward",
+    "lastName": "Davis",
+    "birthday": "1983-01-25T00:00:00Z",
+    "address": "212 Birch Road, Springfield",
+    "phoneNumber": "555-0105"
+  },
+  {
+    "firstName": "Fiona",
+    "lastName": "Garcia",
+    "birthday": "1999-05-12T00:00:00Z",
+    "address": "333 Cedar Blvd, Springfield",
+    "phoneNumber": "555-0106"
+  },
+  {
+    "firstName": "George",
+    "lastName": "Rodriguez",
+    "birthday": "1979-09-01T00:00:00Z",
+    "address": "444 Spruce Way, Springfield",
+    "phoneNumber": "555-0107"
+  },
+  {
+    "firstName": "Hannah",
+    "lastName": "Wilson",
+    "birthday": "2001-12-03T00:00:00Z",
+    "address": "555 Aspen Drive, Springfield",
+    "phoneNumber": "555-0108"
+  },
+  {
+    "firstName": "Ivan",
+    "lastName": "Martinez",
+    "birthday": "1980-02-20T00:00:00Z",
+    "address": "666 Willow Creek, Springfield",
+    "phoneNumber": "555-0109"
+  },
+  {
+    "firstName": "Julia",
+    "lastName": "Anderson",
+    "birthday": "1993-04-18T00:00:00Z",
+    "address": "777 Redwood Pkwy, Springfield",
+    "phoneNumber": "555-0110"
+  }
+]
