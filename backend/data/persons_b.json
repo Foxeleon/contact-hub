@@ -1,0 +1,72 @@
+[
+  {
+    "firstName": "Kevin",
+    "lastName": "Thomas",
+    "birthday": "1998-06-21T00:00:00Z",
+    "address": "888 Sequoia Trail, Springfield",
+    "phoneNumber": "555-0111"
+  },
+  {
+    "firstName": "Laura",
+    "lastName": "Taylor",
+    "birthday": "1987-10-11T00:00:00Z",
+    "address": "999 Juniper Court, Springfield",
+    "phoneNumber": "555-0112"
+  },
+  {
+    "firstName": "Michael",
+    "lastName": "Moore",
+    "birthday": "1990-01-01T00:00:00Z",
+    "address": "111 Cypress Lane, Springfield",
+    "phoneNumber": "555-0113"
+  },
+  {
+    "firstName": "Nancy",
+    "lastName": "Jackson",
+    "birthday": "1975-07-07T00:00:00Z",
+    "address": "222 Magnolia Ave, Springfield",
+    "phoneNumber": "555-0114"
+  },
+  {
+    "firstName": "Oscar",
+    "lastName": "White",
+    "birthday": "2002-10-20T00:00:00Z",
+    "address": "333 Poplar Street, Springfield",
+    "phoneNumber": "555-0115"
+  },
+  {
+    "firstName": "Patricia",
+    "lastName": "Harris",
+    "birthday": "1982-12-12T00:00:00Z",
+    "address": "444 Dogwood Drive, Springfield",
+    "phoneNumber": "555-0116"
+  },
+  {
+    "firstName": "Quentin",
+    "lastName": "Martin",
+    "birthday": "1994-08-30T00:00:00Z",
+    "address": "555 Holly Blvd, Springfield",
+    "phoneNumber": "555-0117"
+  },
+  {
+    "firstName": "Rachel",
+    "lastName": "Thompson",
+    "birthday": "1989-05-25T00:00:00Z",
+    "address": "666 Hawthorn Way, Springfield",
+    "phoneNumber": "555-0118"
+  },
+  {
+    "firstName": "Steven",
+    "lastName": "Lee",
+    "birthday": "1996-03-03T00:00:00Z",
+    "address": "777 Chestnut Circle, Springfield",
+    "phoneNumber": "555-0119"
+  },
+  {
+    "firstName": "Tina",
+    "lastName": "Walker",
+    "birthday": "1984-09-09T00:00:00Z",
+    "address": "888 Sycamore Place, Springfield",
+    "phoneNumber": "555-0120"
+  }
+]

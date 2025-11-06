@@ -1,11 +1,10 @@
 # Makefile for the backend service
-
 .DEFAULT_GOAL := help
 
-# Command to run the development server
+# Command to run the development server with CORS enabled
 run:
-	@echo "Starting development server..."
-	go run ./cmd/server/main.go
+	@echo "Starting development server with CORS enabled for localhost..."
+	APP_ENV=development go run ./cmd/server/main.go
 
 # Command to run all tests
 test:
@@ -20,6 +19,6 @@ tidy:
 # Display help message
 help:
 	@echo "Available commands:"
-	@echo "  make run    - Start the development server"
+	@echo "  make run    - Start the development server (with CORS enabled)"
 	@echo "  make test   - Run all unit tests"
 	@echo "  make tidy   - Tidy module dependencies"
