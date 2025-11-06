@@ -1,0 +1,14 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend/data:/app/data # Mount local data folder into the container
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
