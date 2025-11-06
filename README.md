@@ -1,30 +1,34 @@
 # Contact Hub
 
-A brief, one-sentence summary of the project. For example: "A service for searching and viewing contact information, created as a technical assessment."
+A simple full-stack web application for managing person contacts. Built with Go (Backend) and React (Frontend).
 
-## Description
+## Features
 
-**Contact Hub** is a full-stack application designed to demonstrate skills in building resilient and well-structured systems. The backend, built with **Go**, handles data processing, while the frontend, developed with **React** and **Material UI**, provides the user interface.
+*   **Backend**: Go with Chi router, providing a RESTful API.
+*   **Frontend**: React with Vite, TypeScript, and Material-UI.
+*   **API**: Supports full-text search, date-range filtering, and server-side pagination.
+*   **Containerized**: Fully containerized with Docker and Docker Compose for easy setup and deployment.
 
-## Tech Stack
+## Prerequisites
 
-*   **Backend:** Go
-*   **Frontend:** React, Material UI
-*   **Infrastructure:** Docker, Docker Compose
+*   [Docker](https://www.docker.com/get-started)
+*   [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Getting Started
+## Quick Start
 
-> 📝 *Setup instructions will be added soon.*
+1.  **Clone the repository:**
+    ```bash
+    git clone <your-repo-url>
+    cd contact-hub
+    ```
 
-To run the project, a single command will be sufficient:
+2.  **Run the application:**
+    ```bash
+    docker-compose up --build
+    ```
 
-docker-compose up
+3.  **Access the application:**
+    *   The **Frontend** will be available at [http://localhost:5173](http://localhost:5173).
+    *   The **Backend API** will be available at [http://localhost:8080](http://localhost:8080).
 
-
-## API Endpoints
-
-> 📝 *API endpoint documentation will be added soon.*
-
----
-
-&copy; 2025 Andrey Virts
+The application is now running. Any changes made to the `backend/data` directory will be reflected in the application after restarting the containers.

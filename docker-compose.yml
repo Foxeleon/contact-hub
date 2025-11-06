@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/data:/app/data # Mount local data folder into the container
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # You can override the API URL here if needed
+        VITE_API_URL_PERSONS: http://backend:8080/persons
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
