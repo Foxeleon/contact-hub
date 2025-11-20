@@ -62,7 +62,6 @@ func validatePerson(person model.Person) error {
 	return nil
 }
 
-// parseFile теперь обрабатывает и объекты, и массивы.
 func parseFile(filePath string) ([]model.Person, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -75,7 +74,6 @@ func parseFile(filePath string) ([]model.Person, error) {
 		return nil, fmt.Errorf("failed to read: %w", err)
 	}
 
-	// Убираем пробелы в начале, чтобы проверить первый символ
 	trimmedData := bytes.TrimSpace(data)
 	if len(trimmedData) == 0 {
 		return nil, fmt.Errorf("file is empty")

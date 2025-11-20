@@ -35,7 +35,7 @@ This is the simplest and most reliable way to run the entire application stack.
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/Foxeleon/contact-hub.git
     cd contact-hub
     ```
 

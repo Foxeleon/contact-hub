@@ -25,8 +25,8 @@ function App() {
 
     // Filtering and pagination state
     const [searchTerm, setSearchTerm] = useState('');
-    const [birthdayFrom, setBirthdayFrom] = useState<Date | null>(null); // <-- NEW STATE
-    const [birthdayTo, setBirthdayTo] = useState<Date | null>(null);     // <-- NEW STATE
+    const [birthdayFrom, setBirthdayFrom] = useState<Date | null>(null);
+    const [birthdayTo, setBirthdayTo] = useState<Date | null>(null);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [totalRows, setTotalRows] = useState(0);
